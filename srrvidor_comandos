@@ -1,0 +1,30 @@
+import socket 
+import time 
+import os
+s = socket.socket()   
+s.bind(("localhost", 9999))  
+s.listen(1)  
+      
+sc, addr = s.accept()  
+      
+while True:  
+    recibido = sc.recv(1024)  
+    print recibido.find("quit")
+    recibido=recibido[:-2]
+    if (recibido == "quit"):  
+        break 
+    elif (recibido == "time"):
+        sc.send(time.strftime("%H:%M:%S"))
+    elif (recibido == "sistema"):
+        sistemaop = os.name
+        sc.send(sistemaop)
+    elif (recibido=="date"):
+        sc.send(time.strftime("%d/%m/%y"))
+    
+    
+	print "Recibido:", recibido  
+    sc.send(recibido)  
+print "adios"  
+      
+sc.close()  
+s.close() 
